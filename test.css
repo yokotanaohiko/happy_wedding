@@ -1,0 +1,73 @@
+
+html,body {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
+
+#glayLayer {
+  /* display:none; */
+  position:fixed;
+  top:360;
+  left:0;
+  height:100%;
+  width:100%;
+  background:black;
+  opacity:0.60;
+  filter:alpha(opacity=60);
+}
+
+#overLayer{
+  /* display:none; */
+  position:fixed;
+  top:400;
+  left:50%;
+  /* margin-top:-244px; */
+  margin-left:-300px;
+}
+
+#overLayer img{
+  height:405;
+  width:540;
+}
+div.wrap {
+  width:640px;
+  height:480px;
+  background-image:url(./gakubuti.png);
+  margin:40px;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+.pic_list {
+    float: left; 
+    width: 530px;
+    height:400px;
+    margin:40px 0 0 50px ;
+    padding:0 0 0 5;
+    background-color:white;
+}
+.pic_list li{
+    float: left;
+    width:  16px;
+    height: 12px;
+    list-style-type: none; /* リスト項目のマーカー無し */
+}
+.pic_list li img{
+    margin: 1px 1px 1px 1px;
+    display: table-cell; /* 縦方向に対する高さを揃える */
+    width : 14px;
+    height: 10px;
+    vertical-align: middle; /* 縦方向の揃える */
+    text-align: center;
+}
+
+.pic_list li img.border{
+    margin:0 0 0 0;
+    display: table-cell; 
+    width : 14px;
+    height: 10px;
+    vertical-align: middle; 
+    border: 1px #FF0 solid;
+}

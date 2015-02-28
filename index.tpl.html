@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>マカロン結婚式記念サイト</title>
+    <link rel="stylesheet" href="test.css">
+    <script type="text/javascript" src="./jquery-2.1.1.js"></script>
+    <script>
+      $(document).ready(function(){
+          $('body').append("<div id='glayLayer'></div><div id='overLayer'></div>");
+          $("#glayLayer").click(function(){
+            $(this).hide();
+            $("#overLayer").hide();
+            });
+
+          // 最初の画像を出す
+          var image_num = 0;
+          var last_showed = 0;
+          $("#overLayer").show().html("<img src='"+$("li.modal a[id='"+image_num+"']").attr("href")+"' />");
+          $("li.modal a[id='"+image_num+"'] img").addClass('border');
+          $("#overLayer").css('opacity',0)
+          $("#overLayer").fadeTo(2800, 1);
+          $("#overLayer").fadeTo(2800, 0);
+          image_num ++;
+
+          // 画像のスライドショー
+          setInterval(function(){
+            if(image_num > 1088){image_num = 0;}
+            $("li.modal a[id='"+last_showed+"'] img").removeClass('border');
+            $("li.modal a[id='"+image_num+"'] img").addClass('border');
+            console.log($("#overLayer").css('opacity'))
+            $("#overLayer").css('opacity',0)
+            $("#overLayer").show().html("<img src='"+$("li.modal a[id='"+image_num+"']").attr("href")+"' />");
+            $("#overLayer").fadeTo(2800, 1);
+            $("#overLayer").fadeTo(2800, 0);
+            last_showed = image_num;
+            image_num ++;
+            },6000);
+
+          $("li.modal a").click(function(){
+            // $('#glayLayer').show();
+            // $("#overLayer").show().html("<img src='"+$(this).attr("href")+"' />");
+            console.log($(this).attr('id'));
+            image_num = $(this).attr('id');
+            return false;
+            });
+
+      });
+    </script>
+  </head>
+  <body>
+    <div class="wrap"></div>
+    <ul class="pic_list">
+      {% for ii in range(33*33) %}
+      <li class="modal"><a href="image/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
+      <!-- <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>-->
+      {% endfor %}
+
+    </ul>
+  </body>
+</html>
