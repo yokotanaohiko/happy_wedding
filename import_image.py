@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 u'''
 写真を含むフォルダを引数とする。
