@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 from jinja2 import Environment, PackageLoader, FileSystemLoader
@@ -17,7 +17,7 @@ image_datas = c.fetchall()
 image_pxs = np.array([ data[2:5] for data in image_datas])
 
 # 画像から画像の情報を取得
-im = Image.open('heart.jpeg')
+im = Image.open('heart.png')
 if im.mode != 'RGB':
     im = im.convert('RGB')
 
