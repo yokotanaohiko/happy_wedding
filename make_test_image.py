@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 u'''連番の数値が書かれた画像を生成する'''
 
