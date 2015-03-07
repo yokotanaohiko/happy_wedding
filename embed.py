@@ -6,8 +6,8 @@ import sqlite3
 from PIL import Image
 import numpy as np
 
-num_width = 33
-num_height = 33
+num_width = 66
+num_height = 66
 
 # データベースから画像の情報を取得
 conn = sqlite3.connect('image.sqlite')
@@ -17,19 +17,17 @@ image_datas = c.fetchall()
 image_pxs = np.array([ data[2:5] for data in image_datas])
 
 # 画像から画像の情報を取得
-im = Image.open('heart.jpeg')
+im = Image.open('maka3.png')
 if im.mode != 'RGB':
     im = im.convert('RGB')
 
 px = im.load()
 pxs = []
-for iy,y in enumerate(range(0, im.size[1], im.size[1]/num_height)):
-    if iy < 2:continue
-    if iy >= num_height+2:break
-    for ix,x in enumerate(range(0,im.size[0], im.size[0]/num_width)):
-        if ix < 2:continue
-        if ix >= num_width+2:break
-        pxs.append(np.array(px[x,y]))
+for iy,y in enumerate(np.linspace(1, im.size[1]-1, num_height)):
+    if iy >= num_height:break
+    for ix,x in enumerate(np.linspace(1,im.size[0]-1, num_width)):
+        if ix >= num_width:break
+        pxs.append(np.array(px[int(round(x)),int(round(y))]))
 
 def px_to_image(px):
     distance = map(np.linalg.norm, np.subtract(image_pxs,px))

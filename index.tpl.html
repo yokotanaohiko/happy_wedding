@@ -1,14 +1,15 @@
 <html>
   <head>
     <title>マカロン結婚式記念サイト</title>
+    <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
+    
     <link rel="stylesheet" href="test.css">
     <script type="text/javascript" src="./jquery-2.1.1.js"></script>
     <script>
       $(document).ready(function(){
+          var sw = 1;
           $('body').append("<div id='glayLayer'></div><div id='overLayer'></div>");
           $("#glayLayer").click(function(){
-            $(this).hide();
-            $("#overLayer").hide();
             });
 
           // 最初の画像を出す
@@ -19,11 +20,13 @@
           $("#overLayer").css('opacity',0)
           $("#overLayer").fadeTo(2800, 1);
           $("#overLayer").fadeTo(2800, 0);
+          
           image_num ++;
 
           // 画像のスライドショー
           setInterval(function(){
-            if(image_num > 1088){image_num = 0;}
+            if(sw == 0){return false;}
+            if(image_num >= 66*66){image_num = 0;}
             $("li.modal a[id='"+last_showed+"'] img").removeClass('border');
             $("li.modal a[id='"+image_num+"'] img").addClass('border');
             console.log($("#overLayer").css('opacity'))
@@ -43,17 +46,26 @@
             return false;
             });
 
+
       });
     </script>
   </head>
   <body>
-    <div class="wrap"></div>
-    <ul class="pic_list">
-      {% for ii in range(33*33) %}
-      <li class="modal"><a href="image/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
-      <!-- <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>-->
-      {% endfor %}
+    <h1>Celebration for makaron's wedding!</h1>
+    <form action="post" method="post">
+      <p>画像ファイルアップロード</p>
+      <input type="file" name="photo" accept="image/*;capture=camera">
+    </form>
+    <div class="curtain">
+      <div class="wrap">
+        <ul class="pic_list">
+          {% for ii in range(66*66) %}
+          <li class="modal"><a href="makaron/main/{{ images[ii] }}.JPG" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.JPG" alt="イメージサンプル"></a></li>
+          {% endfor %}
+          <!-- <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>-->
 
-    </ul>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
