@@ -24,7 +24,7 @@ try:
 except:
     pass
 
-for image_file in glob.glob(inputdir+'/*.JPG'):
+for image_file in glob.glob(inputdir+'/*.png'):
     im = Image.open(image_file)
     print image_file, im.size, im.format, im.mode
     if im.mode != 'RGB':

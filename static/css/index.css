@@ -36,7 +36,7 @@ div.curtain {
   height:100%;
   margin:-20% 0 0 0;
   padding:22% 10% 0 17%;
-  background-image:url(./curtain.png);
+  background-image:url(../images/curtain.png);
   background-size:contain;
   background-repeat:no-repeat;
 }
@@ -44,7 +44,7 @@ div.curtain {
 div.wrap {
   width:640px;
   height:480px;
-  background-image:url(./gakubuti.png);
+  background-image:url(../images/gakubuti.png);
   /*margin:40px;*/
   background-size:cover;
   background-repeat:no-repeat;

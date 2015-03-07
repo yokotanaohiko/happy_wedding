@@ -17,7 +17,7 @@ image_datas = c.fetchall()
 image_pxs = np.array([ data[2:5] for data in image_datas])
 
 # 画像から画像の情報を取得
-im = Image.open('maka3.png')
+im = Image.open('heart.png')
 if im.mode != 'RGB':
     im = im.convert('RGB')
 
@@ -38,4 +38,4 @@ env = Environment(loader=FileSystemLoader('./'))
 template = env.get_template('index.tpl.html')
 
 with open('index.html','w') as f:
-    f.write( template.render({'images':images}).encode('utf-8'))
+    f.write( template.render({'images':images,'num':num_height*num_width}).encode('utf-8'))

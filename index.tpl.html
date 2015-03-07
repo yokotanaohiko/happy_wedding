@@ -3,8 +3,8 @@
     <title>マカロン結婚式記念サイト</title>
     <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
     
-    <link rel="stylesheet" href="test.css">
-    <script type="text/javascript" src="./jquery-2.1.1.js"></script>
+    <link rel="stylesheet" href="static/css/index.css">
+    <script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
     <script>
       $(document).ready(function(){
           var sw = 1;
@@ -26,7 +26,7 @@
           // 画像のスライドショー
           setInterval(function(){
             if(sw == 0){return false;}
-            if(image_num >= 66*66){image_num = 0;}
+            if(image_num >= {{num}}){image_num = 0;}
             $("li.modal a[id='"+last_showed+"'] img").removeClass('border');
             $("li.modal a[id='"+image_num+"'] img").addClass('border');
             console.log($("#overLayer").css('opacity'))
@@ -52,18 +52,20 @@
   </head>
   <body>
     <h1>Celebration for makaron's wedding!</h1>
-    <form action="post" method="post">
+    <form action="/upload" method="post">
       <p>画像ファイルアップロード</p>
       <input type="file" name="photo" accept="image/*;capture=camera">
     </form>
     <div class="curtain">
       <div class="wrap">
         <ul class="pic_list">
-          {% for ii in range(66*66) %}
-          <li class="modal"><a href="makaron/main/{{ images[ii] }}.JPG" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.JPG" alt="イメージサンプル"></a></li>
+          {% for ii in range(num) %}
+          <li class="modal"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
           {% endfor %}
-          <!-- <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>-->
-
+          <!--
+          <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>
+          <li class="modal"><a href="makaron/main/{{ images[ii] }}.JPG" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.JPG" alt="イメージサンプル"></a></li>
+          -->
         </ul>
       </div>
     </div>
