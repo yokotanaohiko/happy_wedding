@@ -52,9 +52,10 @@
   </head>
   <body>
     <h1>Celebration for makaron's wedding!</h1>
-    <form action="/upload" method="post">
+    <form action="/upload" method="post" enctype="multipart/form-data">
       <p>画像ファイルアップロード</p>
       <input type="file" name="photo" accept="image/*;capture=camera">
+      <input type="submit" value="この画像をベースにする">
     </form>
     <div class="curtain">
       <div class="wrap">

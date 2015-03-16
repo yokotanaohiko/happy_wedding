@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from bottle import route, run, static_file, redirect, request
+from embed import pixelize
 
 @route('/')
 def index():
@@ -12,8 +13,11 @@ def index():
 @route('/upload', method='POST')
 def upload():
     photo = request.files.get('photo')
-    print photo.filename
-    photo.save('/home/vagrant/')
+    image_filename = photo.filename
+    print image_filename
+    save_path = '/home/vagrant/happy_wedding/'
+    photo.save(save_path+image_filename)
+    pixelize(save_path+image_filename)
     return '''upload complete! <a href='/'>戻る</a>'''
 #    redirect("/")
 

@@ -11,6 +11,7 @@ import glob
 import sqlite3
 from PIL import Image
 import numpy as np
+from color_hash import colhash
 
 inputdir = sys.argv[1]
 
@@ -19,7 +20,7 @@ c = conn.cursor()
 
 try:
     c.execute(u'''create table rgbdata
-   (id integer primary key ,image_path text,red integer,green integer,blue integer) 
+   (id integer primary key ,image_path text,red integer,green integer,blue integer,hash integer) 
     ''')
 except:
     pass
@@ -40,11 +41,12 @@ for image_file in glob.glob(inputdir+'/*.png'):
     mean_rgb = np.mean(pxs, axis=0)
     rgb = tuple(map(int, mean_rgb))
     c = conn.cursor()
-    c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3}) '''.format(
+    c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4}) '''.format(
         os.path.splitext(os.path.basename(image_file))[0],
         rgb[0],
         rgb[1],
-        rgb[2]
+        rgb[2],
+        colhash(rgb)
         ))
     conn.commit()
     c.close()
