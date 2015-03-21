@@ -1,0 +1,15 @@
+.contain{
+  float:left;
+  width:100px;
+  height:120px;
+}
+.pallet {
+  width:100px;
+  height:30px;
+  /*background-color:red;*/
+}
+.bar {
+  width:100px;
+  height:30px;
+  /*background-color:red;*/
+}

@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>パレット</title>
+    <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
+    <link rel="stylesheet" href="static/css/pallet.css">
+  </head>
+  <body>
+    <h1>カラーパレット</h1>
+    {% for data in datas %}
+    <div class='contain'>
+      <div class='pallet' style='background-color:rgb({{ data[0] }},{{ data[1] }},{{ data[2] }});'></div>
+      {{ data[0] }},{{ data[1] }},{{ data[2] }} <br>
+      num:{{ data[3] }}
+      <div class='bar' style='background-color:black;height:{{ 0+data[3] }}px'></div>
+    </div>
+    {% endfor %}
+  </body>
+</html>
