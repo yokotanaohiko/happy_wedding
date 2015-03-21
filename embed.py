@@ -23,7 +23,7 @@ def pixelize(filename):
             color_dict[data[5]] = {}
             color_dict[data[5]]['name'] = []
             color_dict[data[5]]['pxs'] = []
-        color_dict[data[5]]['pxs'].append(list(data[2:5])+[0.0])
+        color_dict[data[5]]['pxs'].append(list(data[2:5])+[float(data[6])])
         color_dict[data[5]]['name'].append(data[1])
     # 画像から画像の情報を取得
     im = Image.open(filename)
@@ -56,4 +56,5 @@ def pixelize(filename):
         f.write( template.render({'images':images,'num':num_height*num_width}).encode('utf-8'))
 
 if __name__ == '__main__':
-    pixelize('heart.png')
+    import sys
+    pixelize(sys.argv[1])

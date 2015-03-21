@@ -14,18 +14,22 @@ import numpy as np
 from color_hash import colhash
 
 inputdir = sys.argv[1]
+penalty = sys.argv[2] if sys.argv[2] else 0
 
 conn = sqlite3.connect('./image.sqlite')
 c = conn.cursor()
 
 try:
     c.execute(u'''create table rgbdata
-   (id integer primary key ,image_path text,red integer,green integer,blue integer,hash integer) 
+   (id integer primary key ,image_path text,red integer,green integer,blue integer,hash integer, penalty integer) 
     ''')
 except:
     pass
 
-for image_file in glob.glob(inputdir+'/*.png'):
+for image_file in glob.glob(inputdir+'/*'):
+    name,ext = os.path.splitext(image_file)
+    if ext not in ('.png','.JPG','.jpg','.jpeg'):
+        continue
     im = Image.open(image_file)
     print image_file, im.size, im.format, im.mode
     if im.mode != 'RGB':
@@ -41,18 +45,19 @@ for image_file in glob.glob(inputdir+'/*.png'):
     mean_rgb = np.mean(pxs, axis=0)
     rgb = tuple(map(int, mean_rgb))
     c = conn.cursor()
-    c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4}) '''.format(
+    c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4},{5}) '''.format(
         os.path.splitext(os.path.basename(image_file))[0],
         rgb[0],
         rgb[1],
         rgb[2],
-        colhash(rgb)
+        colhash(rgb),
+        penalty
         ))
     conn.commit()
     c.close()
 
     # サムネイルを作成し、保存
-    thumbnail_path = 'thumbnail/'+os.path.basename(image_file)
+    thumbnail_path = 'thumbnail/'+os.path.basename(name+'.png')
     if os.path.exists(thumbnail_path):
         continue
     thumbnail_size = (160,120)

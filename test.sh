@@ -1,6 +1,10 @@
 #!/bin/sh
 
-python embed.py
+if [ $# -ne 1 ]; then
+    python embed.py heart.png
+else
+    python embed.py $1
+fi
 
 if [ "$(uname)" == 'Darwin' ]; then
     echo 'mac!'
