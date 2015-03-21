@@ -1,11 +1,31 @@
 <html>
   <head>
-    <title>パレット</title>
+    <title>管理画面</title>
     <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
     <link rel="stylesheet" href="static/css/pallet.css">
   </head>
   <body>
-    <h1>カラーパレット</h1>
+    <h1>管理画面</h1>
+    <p><a href="/">トップに戻る</a></p>
+    <h2>画像アップロード</h2>
+    <ul>
+      <li>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          ベース画像
+          <input type="file" name="photo" accept="image/*;capture=camera" multiple>
+          <input type="submit" value="この画像をベースにする">
+        </form>
+      </li>
+      <li>
+        <form action="/addpallet" method="post" enctype="multipart/form-data">
+          ピース画像
+          <input type="file" name="photo" accept="image/*;capture=camera" multiple>
+          <input type="submit" value="この画像をピースにする">
+        </form>
+      </li>
+    </ul>
+
+    <h2>カラーパレット</h2>
     {% for data in datas %}
     <div class='contain'>
       <div class='pallet' style='background-color:rgb({{ data[0] }},{{ data[1] }},{{ data[2] }});'></div>

@@ -3,10 +3,17 @@
 
 from bottle import route, run, static_file, redirect, request
 from embed import pixelize
+from import_image import ImportImage
 
 @route('/')
 def index():
     f = open('index.html', 'r')
+    ret = f.read()
+    return ret
+
+@route('/pallet')
+def index():
+    f = open('pallet.html', 'r')
     ret = f.read()
     return ret
 
@@ -20,6 +27,20 @@ def upload():
     pixelize(save_path+image_filename)
     return '''upload complete! <a href='/'>戻る</a>'''
 #    redirect("/")
+
+@route('/addpallet', method='POST')
+def add_pallet():
+    photo = request.files.get('photo')
+    image_filename = photo.filename
+    print image_filename
+    save_path = '/home/vagrant/happy_wedding/image/'
+    photo.save(save_path+image_filename)
+
+    ii = ImportImage()
+    ii.import_image(save_path+image_filename, 0)
+    return '''add pallet complete! <a href='/'>戻る</a>'''
+#    redirect("/")
+
 
 @route('/thumbnail/<filename>')
 def thumbnail(filename):
