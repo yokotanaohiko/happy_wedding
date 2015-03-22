@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>管理画面</title>
+    <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
+    <!-- Bootstrap core CSS -->
+    
+    <link rel="stylesheet" href="static/css/pallet.css">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="static/js/jquery-2.1.1.js"></script>
+    
+  </head>
+  <body>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Celebration for makaron's wedding!</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="pallet">管理画面</a></li>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+
+    <div class="cantainer">
+      <div class="jumbotron">
+        {% if others %}
+        <p class="{{ others['status'] }}">{{ others['message'] }}</p>
+        {% endif %}
+        <h1>管理画面</h1>
+
+
+        <h2>画像アップロード</h2>
+        <ul>
+          <li>
+            <form action="/upload" method="post" enctype="multipart/form-data" class="form-inline">
+              <div class="form-group">
+                <label for="upload">ベース画像</label>
+                <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" >
+              </div>
+              
+              <button type="submit" class="btn btn-default">この画像をベースにする</button>
+            </form>
+          </li>
+          <li>
+            <form action="/addpallet" method="post" enctype="multipart/form-data" class="form-inline">
+              <div class="form-group">
+                <label for="upload">ピース画像</label>
+                <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" multiple>
+              </div>
+              
+              <button type="submit" class="btn btn-default">この画像をピースに追加する</button>
+            </form>
+          </li>
+          <li>
+            <form action="/colorcheck" method="post" enctype="multipart/form-data" class="form-inline">
+              <div class="form-group">
+                <label for="upload">画像の色あい確認</label>
+                <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" multiple>
+              </div>
+              
+              <button type="submit" class="btn btn-default">この画像の色あいを確認する</button>
+            </form>
+          </li>
+        </ul>
+        {% if others and others.get('iroais') %}
+        {% for iroai in others['iroais'] %}
+        <h3>{{ iroai['name'] }}の色合い</h3>
+        <img src="{{ iroai['path'] }}" alt="確認した画像" style='float:right;'>
+        <div style="background-color:rgb({{ iroai['color'][0] }},{{ iroai['color'][1] }},{{ iroai['color'][2] }});width:100px;height:100px;float:left;"></div>
+        <p>この色合いは、現在{{ iroai['hashnum'] }}枚あります。</p>
+        <div style='clear:both'></div>
+        {% endfor %}
+        {% endif %}
+
+        <h2>カラーパレット</h2>
+        <p>色合いの表です。ピース画像は、これらの色合いの一つに属します。同じ色合いに属するピース画像の枚数がパレットには表示されています。</p>
+        <p>いろんな色のピース画像をたくさんアップロードして、0枚となっている色合いを無くしていきましょう！</p>
+        {% for data in datas %}
+        <div class='contain'>
+          <div class='pallet' style='background-color:rgb({{ data[0] }},{{ data[1] }},{{ data[2] }});'></div>
+          <!--({{ data[0] }},{{ data[1] }},{{ data[2] }}) <br>-->
+          {{ data[3] }}枚
+          <div class='bar' style='background-color:black;height:{{ 0+data[3] }}px'></div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/js/bootstrap.min.js"></script>
+  </body>
+</html>

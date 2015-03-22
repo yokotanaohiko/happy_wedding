@@ -17,7 +17,7 @@ def make_number_image():
 def make_color_image():
     for num in range(1000):
         im = Image.new('RGB',(160,120),color=(25*( (num/100)%10 ),25*(( num/10 )%10),25*(num%10)))
-        im.save('./images/test{0}.png'.format(num))
+        im.save('./test_image/test{0}.png'.format(num))
 
 if __name__ == '__main__':
     make_color_image()

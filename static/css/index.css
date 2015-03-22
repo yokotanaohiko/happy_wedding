@@ -1,7 +1,7 @@
 
 html,body {
   margin:0;
-  padding:0;
+  padding:7px 0 0 0;
   height:100%;
 }
 
@@ -9,7 +9,7 @@ html,body {
 #glayLayer {
   /* display:none; */
   position:fixed;
-  top:360;
+  top:500px;
   left:0;
   height:100%;
   width:100%;
@@ -21,22 +21,34 @@ html,body {
 #overLayer{
   /* display:none; */
   position:fixed;
-  top:400;
-  left:50%;
-  /* margin-top:-244px; */
-  margin-left:-300px;
+  top:500px;
+  width:540px;
+  margin:0 auto;
 }
 
 #overLayer img{
-  height:405;
-  width:540;
+  height:100%;
+  width:100%;
 }
-div.wrap {
+/*
+div.curtain {
+  width:100%;
+  min-width:900px;
+  height:100%;
+  margin:0 0 0 0;
+  padding:22% 10% 0 17%;
+  background-image:url(../images/curtain.png);
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+*/
+div.fuchi {
   width:640px;
   height:480px;
-  background-image:url(./gakubuti.png);
-  margin:40px;
+  background-image:url(../images/gakubuti.png);
+  margin:40px 0 0 0;
   background-size:cover;
+  padding:40px 50px 30px 50px;
   background-repeat:no-repeat;
 }
 
@@ -44,30 +56,30 @@ div.wrap {
     float: left; 
     width: 530px;
     height:400px;
-    margin:40px 0 0 50px ;
-    padding:0 0 0 5;
+    padding:0 0 0 0;
     background-color:white;
 }
 .pic_list li{
     float: left;
-    width:  16px;
-    height: 12px;
+    width:  8px;
+    height: 6px;
     list-style-type: none; /* リスト項目のマーカー無し */
 }
 .pic_list li img{
-    margin: 1px 1px 1px 1px;
+   /* margin: 1px 1px 1px 1px; */
+    margin:0 ;
     display: table-cell; /* 縦方向に対する高さを揃える */
-    width : 14px;
-    height: 10px;
+    width : 8px;
+    height: 6px;
     vertical-align: middle; /* 縦方向の揃える */
     text-align: center;
 }
-
+/* 表示中の画像につける枠 */
 .pic_list li img.border{
     margin:0 0 0 0;
     display: table-cell; 
-    width : 14px;
-    height: 10px;
+    width : 7px;
+    height: 5px;
     vertical-align: middle; 
     border: 1px #FF0 solid;
 }
