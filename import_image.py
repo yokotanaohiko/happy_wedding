@@ -17,6 +17,11 @@ class ImportImage():
     u'''画像をインポートするクラス'''
 
     def __init__(self):
+        pass
+
+    def connect(self):
+        u'''sqlite のコネクションを張る'''
+
         self.conn = sqlite3.connect('./image.sqlite')
         c = self.conn.cursor()
 
@@ -27,7 +32,9 @@ class ImportImage():
         except:
             pass
 
-    def import_image(self, image_file, penalty):
+    def get_color(self, image_file):
+        u'''画像の平均色を( R,G,B )で返す'''
+
         name,ext = os.path.splitext(image_file)
         if ext not in ('.png','.JPG','.jpg','.jpeg'):
             return None
@@ -44,7 +51,45 @@ class ImportImage():
             for y in range(0,im.size[1],5):
                 pxs.append(px[x,y])
         mean_rgb = np.mean(pxs, axis=0)
-        rgb = tuple(map(int, mean_rgb))
+        return tuple(map(int, mean_rgb))
+
+    def num_of_same_hash(self, rgb):
+        if 'conn' not in dir( self ):
+            self.connect()
+        
+        c = self.conn.cursor()
+        try:
+            c.execute('''
+            select count(id) from rgbdata where hash = {0} and penalty <= 1000
+            '''.format(colhash(rgb)))
+            num = c.fetchall()
+            return num[0][0]
+        except:
+            return None
+
+
+    def make_thumbnail(self, image_file):
+        u'''サムネイルをpng形式で保存'''
+        name,ext = os.path.splitext(image_file)
+        if ext not in ('.png','.JPG','.jpg','.jpeg'):
+            return None
+        im = Image.open(image_file)
+        if im.mode != 'RGB':
+            im = im.convert('RGB')
+
+        thumbnail_path = 'thumbnail/'+os.path.basename(name+'.png')
+        if os.path.exists(thumbnail_path):
+            return None
+        thumbnail_size = (160,120)
+        im.thumbnail(thumbnail_size)
+        im.save(thumbnail_path)
+
+    def import_image(self, image_file, penalty):
+        u'''画像をsqliteにインポートする'''
+        rgb = self.get_color(image_file)
+        if 'conn' not in dir( self ):
+            self.connect()
+
         c = self.conn.cursor()
         c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4},{5}) '''.format(
             os.path.splitext(os.path.basename(image_file))[0],
@@ -57,15 +102,11 @@ class ImportImage():
         self.conn.commit()
         c.close()
 
-        # サムネイルを作成し、保存
-        thumbnail_path = 'thumbnail/'+os.path.basename(name+'.png')
-        if os.path.exists(thumbnail_path):
-            return None
-        thumbnail_size = (160,120)
-        im.thumbnail(thumbnail_size)
-        im.save(thumbnail_path)
+        self.make_thumbnail(image_file)
+
 
     def import_dir(self, inputdir, penalty):
+        u'''指定したディレクトリ下にある画像をすべてインポートする'''
         for image_file_path in glob.glob(inputdir+'/*'):
             self.import_image(image_file_path, penalty)
 
@@ -77,6 +118,7 @@ if __name__ == '__main__':
     if os.path.isfile(inputname):
         ii.import_image(inputname, penalty)
     elif os.path.isdir(inputname):
-        ii.import_dir(inputdir, penalty)
+        ii.import_dir(inputname, penalty)
     else:
         print 'no such files!'
+   
