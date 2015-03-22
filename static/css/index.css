@@ -73,7 +73,7 @@ div.wrap {
     vertical-align: middle; /* 縦方向の揃える */
     text-align: center;
 }
-
+/* 表示中の画像につける枠 */
 .pic_list li img.border{
     margin:0 0 0 0;
     display: table-cell; 
