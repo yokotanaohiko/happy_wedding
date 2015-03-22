@@ -55,20 +55,16 @@
     </script>
   </head>
   <body>
-      <h1>Celebration for makaron's wedding!</h1>
-      <a href="pallet">パレット</a>
-      <div class="curtain">
-        <div class="wrap">
-          <ul class="pic_list">
-            {% for ii in range(num) %}
-            <li class="modal"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
-            {% endfor %}
-            <!--
-            <li class="modal"><a href="thumbnail/test{{ii}}.png" id="{{ii}}"><img src="thumbnail/test{{ ii }}.png" alt="イメージサンプル"></a></li>
-            <li class="modal"><a href="makaron/main/{{ images[ii] }}.JPG" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.JPG" alt="イメージサンプル"></a></li>
-            -->
-          </ul>
-        </div>
+    <h1>Celebration for makaron's wedding!</h1>
+    <a href="pallet">パレット</a>
+    <div class="curtain">
+      <div class="wrap">
+        <ul class="pic_list">
+          {% for ii in range(num) %}
+          <li class="modal"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
+          {% endfor %}
+        </ul>
       </div>
+    </div>
   </body>
 </html>

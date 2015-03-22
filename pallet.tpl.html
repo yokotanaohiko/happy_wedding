@@ -23,7 +23,20 @@
           <input type="submit" value="この画像をピースにする">
         </form>
       </li>
+      <li>
+        <form action="/colorcheck" method="post" enctype="multipart/form-data">
+          画像の色あい確認
+          <input type="file" name="photo" accept="image/*;capture=camera" multiple>
+          <input type="submit" value="この画像の色あいを確認する">
+        </form>
+      </li>
     </ul>
+    {% if others %}
+    <h3>{{ others['name'] }}の色合い</h3>
+    <div style="background-color:rgb({{ others['color'][0] }},{{ others['color'][1] }},{{ others['color'][2] }});width:200px;height:200px;float:left;"></div>
+    <p>この色合いは、現在{{ others['hashnum'] }}枚あります。</p>
+    <div style='clear:both'></div>
+    {% endif %}
 
     <h2>カラーパレット</h2>
     {% for data in datas %}
