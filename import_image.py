@@ -92,7 +92,7 @@ class ImportImage():
 
         c = self.conn.cursor()
         c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4},{5}) '''.format(
-            os.path.splitext(os.path.basename(image_file))[0],
+            image_file,
             rgb[0],
             rgb[1],
             rgb[2],

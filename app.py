@@ -22,50 +22,91 @@ def index():
 @route('/upload', method='POST')
 def upload():
     photo = request.files.get('photo')
+    if not photo:
+        redirect('/no_photo')
+
     image_filename = photo.filename
-    print image_filename
     save_path = '/home/vagrant/happy_wedding/'
-    photo.save(save_path+image_filename)
+    if not os.path.exists(save_path+image_filename):
+        photo.save(save_path+image_filename)
     pixelize(save_path+image_filename)
-    return '''upload complete! <a href='/'>戻る</a>'''
-#    redirect("/")
+    data = {
+        'status':'bg-success',
+        'message':u"{0}をベースに変更しました。".format(image_filename)
+        }
+    return pallet_embed(data)
 
 @route('/addpallet', method='POST')
 def add_pallet():
-    photo = request.files.get('photo')
-    image_filename = photo.filename
-    print image_filename
-    save_path = '/home/vagrant/happy_wedding/image/'
-    if not os.path.exists(save_path+image_filename):
-        photo.save(save_path+image_filename)
+    photos = list(map(lambda x: x[1], filter(lambda x: x[0] == "photo", request.POST.allitems())))
+    if not photos[0]:
+        redirect('/no_photo')
+   
+    image_num = len(photos)
+    for photo in photos:
+        image_filename = photo.filename
+        save_path = '/home/vagrant/happy_wedding/image/'
+        if not os.path.exists(save_path+image_filename):
+            photo.save(save_path+image_filename)
 
-    ii = ImportImage()
-    ii.import_image(save_path+image_filename, 0)
-    return '''add pallet complete! <a href='/'>戻る</a>'''
-#    redirect("/")
+        ii = ImportImage()
+        ii.import_image(save_path+image_filename, 0)
+    data = {
+        'status':'bg-success',
+        'message':u"{0}枚のピースを追加しました。".format(image_num)
+        }
+    return pallet_embed(data)
 
 @route('/colorcheck', method='POST')
 def color_check():
-    photo = request.files.get('photo')
-    image_filename = photo.filename
-    print image_filename
-    save_path = '/home/vagrant/happy_wedding/tmp/'
-    if not os.path.exists(save_path+image_filename):
-        photo.save(save_path+image_filename)
+    photos = list(map(lambda x: x[1], filter(lambda x: x[0] == "photo", request.POST.allitems())))
+    if not photos[0]:
+        redirect('/no_photo')
 
-    ii = ImportImage()
-    rgb = ii.get_color(save_path+image_filename)
+    iroais = []
+    for photo in photos:
+        image_filename = photo.filename
+        print image_filename
+        save_path = '/home/vagrant/happy_wedding/tmp/'
+        if not os.path.exists(save_path+image_filename):
+            photo.save(save_path+image_filename)
+
+        ii = ImportImage()
+        rgb = ii.get_color(save_path+image_filename)
+        iroai = {
+            'name':image_filename,
+            'color':rgb,
+            'hashnum':ii.num_of_same_hash(rgb),
+            'path':'thumbnail/{0}.png'.format(image_filename.split('.')[0])
+            }
+        iroais.append(iroai)
+
     data = {
-        'name':image_filename,
-        'color':rgb,
-        'hashnum':ii.num_of_same_hash(rgb)
+        'status':'bg-success',
+        'iroais':iroais,
+        'message':u"色合いの調査が終わりました。"
         }
     return pallet_embed(data)
-#    redirect("/")
+
+@route('/no_photo')
+def no_photo():
+    data = {
+        'status':'bg-warning',
+        'message':u"ERROR!:ファイルが存在しません"
+        }
+    return pallet_embed(data)
 
 @route('/thumbnail/<filename>')
 def thumbnail(filename):
     return static_file(filename, root='thumbnail')
+
+@route('/test_image/<filename>')
+def thumbnail(filename):
+    return static_file(filename, root='test_image')
+
+@route('/image/<filename>')
+def thumbnail(filename):
+    return static_file(filename, root='image')
 
 @route('/static/<path>/<filename>')
 def static(path, filename):

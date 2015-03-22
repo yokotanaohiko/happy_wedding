@@ -15,8 +15,7 @@
     <script>
       $(document).ready(function(){
           var sw = 1;
-          $('div.fuchi').append("<div id='overLayer'></div>");
-          //$('div.fuchi').append("<div id='overLayer'></div><div id='glayLayer'></div>");
+          $('div.fuchi').append("<div id='glayLayer'></div><div id='overLayer'></div>");
           $("#glayLayer").click(function(){
             });
 
@@ -85,11 +84,15 @@
           <div class="fuchi">
             <ul class="pic_list">
               {% for ii in range(num) %}
-              <li class="current-pic"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
+              <li class="current-pic"><a href="{{ images[ii][0] }}" id="{{ii}}"><img src="thumbnail/{{ images[ii][1] }}.png" alt="イメージサンプル"></a></li>
               {% endfor %}
             </ul>
           </div>
         </div>
+
+        <h2>このサイトの説明</h2>
+        <p>ピース画像を使って、ベース画像を組み立てます。組み立てる際には、ピース画像のうち、ベース画像の一部分に最も近い色合いの画像が選ばれます。もし、色合いが近い画像が無い場合は、ダミーの画像が代わりに使用されます。</p>
+        <p>ベース画像とピース画像は、管理画面からアップロードすることができます。</p>
       </div>
     </div>
     <!-- Bootstrap core JavaScript

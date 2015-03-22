@@ -6,7 +6,7 @@ import sqlite3
 from PIL import Image
 import numpy as np
 from color_hash import colhash
-
+import os
 def pixelize(filename):
     num_width = 66
     num_height = 66
@@ -45,7 +45,8 @@ def pixelize(filename):
         min_index = np.argmin(distance)
         #image_pxs[min_index][3] += 0.0
         #return image_datas[min_index][1]
-        return color_dict[colhash(px)]['name'][min_index]
+        name = color_dict[colhash(px)]['name'][min_index]
+        return (name, os.path.basename(name).split('.')[0])
 
     images = map(px_to_image, pxs)
 

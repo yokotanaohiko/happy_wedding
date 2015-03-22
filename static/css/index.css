@@ -8,8 +8,8 @@ html,body {
 
 #glayLayer {
   /* display:none; */
-  /* position:fixed; */
-  top:0;
+  position:fixed;
+  top:500px;
   left:0;
   height:100%;
   width:100%;
@@ -20,17 +20,13 @@ html,body {
 
 #overLayer{
   /* display:none; */
-  position:relative;
-  height:100%;
-  width:100%;
-  /* margin-top:-244px; */
-  /* margin-left:-300px; */
+  position:fixed;
+  top:500px;
+  width:540px;
+  margin:0 auto;
 }
 
 #overLayer img{
-  position:relative;
-  top:-100%;
-  left:0px;
   height:100%;
   width:100%;
 }
