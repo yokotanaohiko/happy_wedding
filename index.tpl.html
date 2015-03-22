@@ -1,26 +1,30 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>マカロン結婚式記念サイト</title>
     <meta http-equiv="Content-Tyep" content="text/html" charset="UTF-8">
+    <!-- Bootstrap core CSS -->
     
     <link rel="stylesheet" href="static/css/index.css">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
     <!--
     <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
     <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
     -->
-    <script type="text/javascript" src="static/js/jquery-2.1.1.js"></script>
+    <script src="static/js/jquery-2.1.1.js"></script>
     <script>
       $(document).ready(function(){
           var sw = 1;
-          $('body').append("<div id='glayLayer'></div><div id='overLayer'></div>");
+          $('div.fuchi').append("<div id='overLayer'></div>");
+          //$('div.fuchi').append("<div id='overLayer'></div><div id='glayLayer'></div>");
           $("#glayLayer").click(function(){
             });
 
           // 最初の画像を出す
           var image_num = 0;
           var last_showed = 0;
-          $("#overLayer").show().html("<img src='"+$("li.modal a[id='"+image_num+"']").attr("href")+"' />");
-          $("li.modal a[id='"+image_num+"'] img").addClass('border');
+          $("#overLayer").show().html("<img src='"+$("li.current-pic a[id='"+image_num+"']").attr("href")+"' />");
+          $("li.current-pic a[id='"+image_num+"'] img").addClass('border');
           $("#overLayer").css('opacity',0)
           $("#overLayer").fadeTo(2800, 1);
           $("#overLayer").fadeTo(2800, 0);
@@ -31,18 +35,18 @@
           setInterval(function(){
             if(sw == 0){return false;}
             if(image_num >= {{num}}){image_num = 0;}
-            $("li.modal a[id='"+last_showed+"'] img").removeClass('border');
-            $("li.modal a[id='"+image_num+"'] img").addClass('border');
+            $("li.current-pic a[id='"+last_showed+"'] img").removeClass('border');
+            $("li.current-pic a[id='"+image_num+"'] img").addClass('border');
             console.log($("#overLayer").css('opacity'))
             $("#overLayer").css('opacity',0)
-            $("#overLayer").show().html("<img src='"+$("li.modal a[id='"+image_num+"']").attr("href")+"' />");
+            $("#overLayer").show().html("<img src='"+$("li.current-pic a[id='"+image_num+"']").attr("href")+"' />");
             $("#overLayer").fadeTo(2800, 1);
             $("#overLayer").fadeTo(2800, 0);
             last_showed = image_num;
             image_num ++;
             },6000);
 
-          $("li.modal a").click(function(){
+          $("li.current-pic a").click(function(){
             // $('#glayLayer').show();
             // $("#overLayer").show().html("<img src='"+$(this).attr("href")+"' />");
             console.log($(this).attr('id'));
@@ -55,16 +59,42 @@
     </script>
   </head>
   <body>
-    <h1>Celebration for makaron's wedding!</h1>
-    <a href="pallet">パレット</a>
-    <div class="curtain">
-      <div class="wrap">
-        <ul class="pic_list">
-          {% for ii in range(num) %}
-          <li class="modal"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
-          {% endfor %}
-        </ul>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Celebration for makaron's wedding!</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="pallet">管理画面</a></li>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+    <div class="cantainer">
+      <div class="jumbotron">
+        <div class="curtain">
+          <div class="fuchi">
+            <ul class="pic_list">
+              {% for ii in range(num) %}
+              <li class="current-pic"><a href="thumbnail/{{ images[ii] }}.png" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}.png" alt="イメージサンプル"></a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/js/bootstrap.min.js"></script>
   </body>
 </html>
