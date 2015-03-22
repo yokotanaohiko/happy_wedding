@@ -38,7 +38,7 @@
             $("li.current-pic a[id='"+image_num+"'] img").addClass('border');
             console.log($("#overLayer").css('opacity'))
             $("#overLayer").css('opacity',0)
-            $("#overLayer").show().html("<img src='"+$("li.current-pic a[id='"+image_num+"']").attr("href")+"' />");
+            $("#overLayer").show().html("<img src='"+$("li.current-pic a[id='"+image_num+"']").attr("href")+"' alt='ダミー画像' />");
             $("#overLayer").fadeTo(2800, 1);
             $("#overLayer").fadeTo(2800, 0);
             last_showed = image_num;
@@ -84,7 +84,7 @@
           <div class="fuchi">
             <ul class="pic_list">
               {% for ii in range(num) %}
-              <li class="current-pic"><a href="{{ images[ii][0] }}" id="{{ii}}"><img src="thumbnail/{{ images[ii][1] }}.png" alt="イメージサンプル"></a></li>
+              <li class="current-pic"><a href="/images/{{ images[ii] }}" id="{{ii}}"><img src="thumbnail/{{ images[ii] }}" alt="イメージサンプル"></a></li>
               {% endfor %}
             </ul>
           </div>

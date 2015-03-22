@@ -49,7 +49,7 @@
                 <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" >
               </div>
               
-              <button type="submit" class="btn btn-default">この画像をベースにする</button>
+              <button type="submit" class="btn btn-info">この画像をベースにする</button>
             </form>
           </li>
           <li>
@@ -59,7 +59,7 @@
                 <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" multiple>
               </div>
               
-              <button type="submit" class="btn btn-default">この画像をピースに追加する</button>
+              <button type="submit" class="btn btn-info">この画像をピースに追加する</button>
             </form>
           </li>
           <li>
@@ -69,7 +69,7 @@
                 <input class="form-control" id="upload" type="file" name="photo" accept="image/*;capture=camera" multiple>
               </div>
               
-              <button type="submit" class="btn btn-default">この画像の色あいを確認する</button>
+              <button type="submit" class="btn btn-info">この画像の色あいを確認する</button>
             </form>
           </li>
         </ul>
@@ -78,7 +78,7 @@
         <h3>{{ iroai['name'] }}の色合い</h3>
         <img src="{{ iroai['path'] }}" alt="確認した画像" style='float:right;'>
         <div style="background-color:rgb({{ iroai['color'][0] }},{{ iroai['color'][1] }},{{ iroai['color'][2] }});width:100px;height:100px;float:left;"></div>
-        <p>この色合いは、現在{{ iroai['hashnum'] }}枚あります。</p>
+        <p>この色合いの画像は、現在{{ iroai['hashnum'] }}枚あります。</p>
         <div style='clear:both'></div>
         {% endfor %}
         {% endif %}

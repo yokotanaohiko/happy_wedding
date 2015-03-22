@@ -21,10 +21,10 @@ def pixelize(filename):
     for data in image_datas:
         if not color_dict.get(data[5]):
             color_dict[data[5]] = {}
-            color_dict[data[5]]['name'] = []
+            color_dict[data[5]]['id'] = []
             color_dict[data[5]]['pxs'] = []
         color_dict[data[5]]['pxs'].append(list(data[2:5])+[float(data[6])])
-        color_dict[data[5]]['name'].append(data[1])
+        color_dict[data[5]]['id'].append(data[0])
     # 画像から画像の情報を取得
     im = Image.open(filename)
     if im.mode != 'RGB':
@@ -45,8 +45,8 @@ def pixelize(filename):
         min_index = np.argmin(distance)
         #image_pxs[min_index][3] += 0.0
         #return image_datas[min_index][1]
-        name = color_dict[colhash(px)]['name'][min_index]
-        return (name, os.path.basename(name).split('.')[0])
+        name = str( color_dict[colhash(px)]['id'][min_index] )+'.png'
+        return name
 
     images = map(px_to_image, pxs)
 
@@ -59,4 +59,3 @@ def pixelize(filename):
 if __name__ == '__main__':
     import sys
     pixelize(sys.argv[1])
->>>>>>> e2f7fd2420e21598d7b704c3dbf516e846e20fb6

@@ -27,7 +27,7 @@ class ImportImage():
 
         try:
             c.execute(u'''create table rgbdata
-           (id integer primary key ,image_path text,red integer,green integer,blue integer,hash integer, penalty integer) 
+           (id integer primary key ,image_path text,red integer,green integer,blue integer,hash integer, penalty integer, active integer) 
             ''')
         except:
             pass
@@ -60,16 +60,35 @@ class ImportImage():
         c = self.conn.cursor()
         try:
             c.execute('''
-            select count(id) from rgbdata where hash = {0} and penalty <= 1000
+            select count(id) from rgbdata where hash = {0} and penalty <= 1000 and active=1
             '''.format(colhash(rgb)))
             num = c.fetchall()
             return num[0][0]
         except:
             return None
 
+    def get_last_id(self):
+        if 'last_id' in dir(self):
+            return self.last_id
+
+        if 'conn' not in dir( self ):
+            self.connect()
+        
+        c = self.conn.cursor()
+        try:
+            c.execute('''
+            select id from rgbdata order by id desc limit 1
+            ''')
+            id = c.fetchall()
+            self.last_id = int( id[0][0] )
+            print id
+            return self.last_id
+        except:
+            return 0
+
 
     def make_thumbnail(self, image_file):
-        u'''サムネイルをpng形式で保存'''
+        u'''サムネイルとコピーをpng形式で保存'''
         name,ext = os.path.splitext(image_file)
         if ext not in ('.png','.JPG','.jpg','.jpeg'):
             return None
@@ -77,32 +96,68 @@ class ImportImage():
         if im.mode != 'RGB':
             im = im.convert('RGB')
 
-        thumbnail_path = 'thumbnail/'+os.path.basename(name+'.png')
-        if os.path.exists(thumbnail_path):
-            return None
+        # コピーを保存(上書き)
+        copy_path = 'images/'+str(self.get_last_id())+'.png'
+        if os.path.exists(copy_path):
+            os.remove(copy_path)
+        im.save(copy_path)
+
+        # サムネイルを保存(上書き)
+        thumbnail_path = 'thumbnail/'+str(self.get_last_id())+'.png'
         thumbnail_size = (160,120)
         im.thumbnail(thumbnail_size)
+        if os.path.exists(thumbnail_path):
+            os.remove(thumbnail_path)
         im.save(thumbnail_path)
 
-    def import_image(self, image_file, penalty):
+    def import_image(self, image_file, penalty=0, active=True):
         u'''画像をsqliteにインポートする'''
         rgb = self.get_color(image_file)
         if 'conn' not in dir( self ):
             self.connect()
 
-        c = self.conn.cursor()
-        c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4},{5}) '''.format(
-            image_file,
-            rgb[0],
-            rgb[1],
-            rgb[2],
-            colhash(rgb),
-            penalty
-            ))
-        self.conn.commit()
-        c.close()
+        # 以前にインポートしたことがあるかどうかを確認
+        try:
+            c = self.conn.cursor()
+            c.execute(u'''
+                select id, active from rgbdata where red={0} and green={1} and blue={2} and image_path='{3}'
+                '''.format(
+                    rgb[0],
+                    rgb[1],
+                    rgb[2],
+                    image_file 
+                    ))
+            state = c.fetchall()
+            print 'Image {0} is already imported '.format(state[0][0])
+            c.execute(u'''
+                update rgbdata set active=1 where id={0}
+                    '''.format(state[0][0]))
+            c.close()
+            return None
+        except:
+            pass
+        
+        # idをインクリメント(get_last_idメソッドの都合でここじゃなきゃだめ)
+        self.last_id = self.get_last_id()+1
+
+        try:
+            c = self.conn.cursor()
+            c.execute(u'''insert into rgbdata values (NULL,'{0}',{1},{2},{3},{4},{5},{6}) '''.format(
+                image_file,
+                rgb[0],
+                rgb[1],
+                rgb[2],
+                colhash(rgb),
+                penalty,
+                int( active )
+                ))
+            self.conn.commit()
+            c.close()
+        except:
+            self.last_id -= 1
 
         self.make_thumbnail(image_file)
+
 
 
     def import_dir(self, inputdir, penalty):

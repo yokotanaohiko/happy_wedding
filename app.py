@@ -7,14 +7,20 @@ from embed import pixelize
 from import_image import ImportImage
 from colemb import pallet_embed
 
+save_path = '/home/job/githome/happy_wedding/tmp/'
+
 @route('/')
 def index():
     f = open('index.html', 'r')
     ret = f.read()
     return ret
 
+@route('/happy_wedding')
+def happy_wedding():
+    redirect('/')
+
 @route('/pallet')
-def index():
+def pallet():
     f = open('pallet.html', 'r')
     ret = f.read()
     return ret
@@ -26,7 +32,6 @@ def upload():
         redirect('/no_photo')
 
     image_filename = photo.filename
-    save_path = '/home/vagrant/happy_wedding/'
     if not os.path.exists(save_path+image_filename):
         photo.save(save_path+image_filename)
     pixelize(save_path+image_filename)
@@ -45,12 +50,11 @@ def add_pallet():
     image_num = len(photos)
     for photo in photos:
         image_filename = photo.filename
-        save_path = '/home/vagrant/happy_wedding/image/'
         if not os.path.exists(save_path+image_filename):
             photo.save(save_path+image_filename)
 
         ii = ImportImage()
-        ii.import_image(save_path+image_filename, 0)
+        ii.import_image(save_path+image_filename)
     data = {
         'status':'bg-success',
         'message':u"{0}枚のピースを追加しました。".format(image_num)
@@ -67,17 +71,17 @@ def color_check():
     for photo in photos:
         image_filename = photo.filename
         print image_filename
-        save_path = '/home/vagrant/happy_wedding/tmp/'
         if not os.path.exists(save_path+image_filename):
             photo.save(save_path+image_filename)
 
         ii = ImportImage()
+        ii.import_image(save_path+image_filename, active=False)
         rgb = ii.get_color(save_path+image_filename)
         iroai = {
             'name':image_filename,
             'color':rgb,
             'hashnum':ii.num_of_same_hash(rgb),
-            'path':'thumbnail/{0}.png'.format(image_filename.split('.')[0])
+            'path':'/thumbnail/{0}.png'.format(ii.get_last_id())
             }
         iroais.append(iroai)
 
@@ -101,12 +105,16 @@ def thumbnail(filename):
     return static_file(filename, root='thumbnail')
 
 @route('/test_image/<filename>')
-def thumbnail(filename):
+def test_image(filename):
     return static_file(filename, root='test_image')
 
 @route('/image/<filename>')
-def thumbnail(filename):
+def image(filename):
     return static_file(filename, root='image')
+
+@route('/images/<filename>')
+def images(filename):
+    return static_file(filename, root='images')
 
 @route('/static/<path>/<filename>')
 def static(path, filename):
